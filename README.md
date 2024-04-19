@@ -459,7 +459,7 @@ def parse_field_helper(form_data, field, prefix=None):
 
 
 form_data = []
-fields = resolve(pdf.doc.catalog["AcroForm"])["Fields"]
+fields = resolve(resolve(pdf.doc.catalog["AcroForm"])["Fields"])
 for field in fields:
     parse_field_helper(form_data, field)
 ```
@@ -473,6 +473,8 @@ Once you run this script, `form_data` is a list containing a three-element tuple
   'SAN FRANCISCO']
 ]
 ```
+
+*Thanks to [@jeremybmerrill](https://github.com/jeremybmerrill) for helping to maintain the form-parsing code above.*
 
 ## Demonstrations
 
