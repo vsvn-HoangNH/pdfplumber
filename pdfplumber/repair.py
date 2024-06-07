@@ -25,6 +25,7 @@ def _repair(
 
     repair_args = [
         executable,
+        "-sstdout=%stderr",
         "-o",
         "-",
         "-sDEVICE=pdfwrite",
@@ -41,14 +42,16 @@ def _repair(
         stdin = path_or_fp
         repair_args += ["-"]
 
-    stdout, stderr = subprocess.Popen(
+    proc = subprocess.Popen(
         repair_args,
         stdin=subprocess.PIPE if stdin else None,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-    ).communicate(stdin.read() if stdin else None)
+    )
 
-    if len(stderr):
+    stdout, stderr = proc.communicate(stdin.read() if stdin else None)
+
+    if proc.returncode:
         raise Exception(f"{stderr.decode('utf-8')}")
 
     return BytesIO(stdout)
