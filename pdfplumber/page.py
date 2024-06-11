@@ -245,6 +245,7 @@ class Page(Container):
 
     def close(self) -> None:
         self.flush_cache()
+        self.get_textmap.cache_clear()
 
     @property
     def width(self) -> T_num:
