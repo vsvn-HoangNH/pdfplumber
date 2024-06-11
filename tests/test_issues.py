@@ -299,3 +299,14 @@ class Test(unittest.TestCase):
                 _ = pdf.pages[0].to_image()
         # We're still alive
         assert True
+
+    def test_issue_1147(self):
+        """
+        Edge-case for when decode_text is passed a string
+        that is out of bounds of PDFDocEncoding
+        """
+        path = os.path.join(HERE, "pdfs/issue-1147-example.pdf")
+        with pdfplumber.open(path) as pdf:
+            page = pdf.pages[0]
+            # Should not error:
+            assert page.extract_text()
