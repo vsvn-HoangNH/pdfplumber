@@ -59,6 +59,28 @@ class Test(unittest.TestCase):
         with pdfplumber.open(path) as pdf:
             assert len(pdf.annots)
 
+    def test_annots_rotated(self):
+        def get_annot(filename, n=0):
+            path = os.path.join(HERE, "pdfs", filename)
+            with pdfplumber.open(path) as pdf:
+                return pdf.pages[0].annots[n]
+
+        a = get_annot("annotations.pdf", 3)
+        b = get_annot("annotations-rotated-180.pdf", 3)
+        c = get_annot("annotations-rotated-90.pdf", 3)
+        d = get_annot("annotations-rotated-270.pdf", 3)
+
+        assert (
+            int(a["width"]) == int(b["width"]) == int(c["height"]) == int(d["height"])
+        )
+        assert (
+            int(a["height"]) == int(b["height"]) == int(c["width"]) == int(d["width"])
+        )
+        assert int(a["x0"]) == int(c["top"]) == int(d["y0"])
+        assert int(a["x1"]) == int(c["bottom"]) == int(d["y1"])
+        assert int(a["top"]) == int(b["y0"]) == int(d["x0"])
+        assert int(a["bottom"]) == int(b["y1"]) == int(d["x1"])
+
     def test_crop_and_filter(self):
         def test(obj):
             return obj["object_type"] == "char"

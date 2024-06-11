@@ -278,8 +278,19 @@ class Page(Container):
 
     @property
     def annots(self) -> T_obj_list:
+        def rotate_point(pt: Tuple[float, float], r: int) -> Tuple[float, float]:
+            turns = r // 90
+            for i in range(turns):
+                x, y = pt
+                comp = self.width if i == turns % 2 else self.height
+                pt = (y, (comp - x))
+            return pt
+
         def parse(annot: T_obj) -> T_obj:
-            rect = annot["Rect"]
+            _a, _b, _c, _d = annot["Rect"]
+            pt0 = rotate_point((_a, _b), self.rotation)
+            pt1 = rotate_point((_c, _d), self.rotation)
+            x0, top, x1, bottom = _invert_box(_normalize_box((*pt0, *pt1)), self.height)
 
             a = annot.get("A", {})
             extras = {
@@ -297,15 +308,15 @@ class Page(Container):
             parsed = {
                 "page_number": self.page_number,
                 "object_type": "annot",
-                "x0": rect[0],
-                "y0": rect[1],
-                "x1": rect[2],
-                "y1": rect[3],
-                "doctop": self.initial_doctop + self.height - rect[3],
-                "top": self.height - rect[3],
-                "bottom": self.height - rect[1],
-                "width": rect[2] - rect[0],
-                "height": rect[3] - rect[1],
+                "x0": x0,
+                "y0": self.height - bottom,
+                "x1": x1,
+                "y1": self.height - top,
+                "doctop": self.initial_doctop + top,
+                "top": top,
+                "bottom": bottom,
+                "width": x1 - x0,
+                "height": bottom - top,
             }
             parsed.update(extras)
             # Replace the indirect reference to the page dictionary
