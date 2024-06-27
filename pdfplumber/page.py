@@ -561,6 +561,7 @@ class Page(Container):
         """
         Removes duplicate chars — those sharing the same text, fontname, size,
         and positioning (within `tolerance`) as other characters on the page.
+        Fontname and size properties can be ignored when comparing the chars.
         """
         p = FilteredPage(self, lambda x: True)
         p._objects = {kind: objs for kind, objs in self.objects.items()}

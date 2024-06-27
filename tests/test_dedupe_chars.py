@@ -72,3 +72,58 @@ class Test(unittest.TestCase):
             page.dedupe_chars().extract_text(y_tolerance=6).splitlines()[4]
             == "UE 8. Circulation - Métabolismes"
         )
+
+    def test_ignore_char_props(self):
+        path = os.path.join(HERE, "pdfs/issue-1114-dedupe-chars.pdf")
+        pdf = pdfplumber.open(path)
+        page = pdf.pages[0]
+
+        def dup_chars(s: str) -> str:
+            return "".join((char if char == " " else char + char) for char in s)
+
+        ground_truth = (
+            ("Simple", False, False),
+            ("Duplicated", True, True),
+            ("Font", "fontname", True),
+            ("Size", "size", True),
+            ("Italic", "fontname", True),
+            ("Weight", "fontname", True),
+            ("Horizontal shift", False, "HHoorrizizoonntatal ls shhifitft"),
+            ("Vertical shift", False, True),
+        )
+        gt = []
+        for text, should_dedup, dup_text in ground_truth:
+            if isinstance(dup_text, bool):
+                if dup_text:
+                    dup_text = dup_chars(text)
+                else:
+                    dup_text = text
+            gt.append((text, should_dedup, dup_text))
+
+        keys_list = ["no_dedupe", {}, {"size"}, {"fontname"}, {"size", "fontname"}]
+        for keys in keys_list:
+            if keys != "no_dedupe":
+                filtered_page = page.dedupe_chars(
+                    tolerance=2, ignore_char_properties=keys
+                )
+            else:
+                filtered_page = page
+            for i, line in enumerate(
+                filtered_page.extract_text(y_tolerance=5).splitlines()
+            ):
+                text, should_dedup, dup_text = gt[i]
+                if keys == "no_dedupe":
+                    should_dedup = False
+                if isinstance(should_dedup, str):
+                    if should_dedup in keys:
+                        assert (
+                            line == text
+                        ), f"Should not be duplicated when ignoring {should_dedup}"
+                    else:
+                        assert (
+                            line == dup_text
+                        ), f"{should_dedup} is not ignored so it should be duplicated"
+                elif should_dedup:
+                    assert line == text
+                else:
+                    assert line == dup_text
