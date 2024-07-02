@@ -9,7 +9,6 @@ from typing import (
     Callable,
     Dict,
     Generator,
-    Iterable,
     List,
     Match,
     Optional,
@@ -785,22 +784,14 @@ def extract_text_simple(
 def dedupe_chars(
     chars: T_obj_list,
     tolerance: T_num = 1,
-    ignore_char_properties: Optional[Iterable[str]] = None,
+    extra_attrs: Optional[Tuple[str, ...]] = ("fontname", "size"),
 ) -> T_obj_list:
     """
-    Removes duplicate chars — those sharing the same text, fontname, size,
-    and positioning (within `tolerance`) as other characters in the set.
-    Fontname and size properties can be ignored when comparing the chars.
+    Removes duplicate chars — those sharing the same text and positioning
+    (within `tolerance`) as other characters in the set. Use extra_args to
+    be more restrictive with the properties shared by the matching chars.
     """
-    char_props = {"text", "fontname", "size", "upright"}
-    if ignore_char_properties is not None:
-        for prop in ignore_char_properties:
-            if prop in ignore_char_properties:
-                char_props.remove(prop)
-            else:
-                raise KeyError(f"Cannot tolerate {prop} in dedupe chars")
-
-    key = itemgetter(*char_props)
+    key = itemgetter(*("upright", "text"), *(extra_attrs or tuple()))
     pos_key = itemgetter("doctop", "x0")
 
     def yield_unique_chars(chars: T_obj_list) -> Generator[T_obj, None, None]:

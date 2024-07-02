@@ -73,7 +73,7 @@ class Test(unittest.TestCase):
             == "UE 8. Circulation - Métabolismes"
         )
 
-    def test_ignore_char_props(self):
+    def test_extra_attrs(self):
         path = os.path.join(HERE, "pdfs/issue-1114-dedupe-chars.pdf")
         pdf = pdfplumber.open(path)
         page = pdf.pages[0]
@@ -100,12 +100,10 @@ class Test(unittest.TestCase):
                     dup_text = text
             gt.append((text, should_dedup, dup_text))
 
-        keys_list = ["no_dedupe", {}, {"size"}, {"fontname"}, {"size", "fontname"}]
+        keys_list = ["no_dedupe", (), ("size",), ("fontname",), ("size", "fontname")]
         for keys in keys_list:
             if keys != "no_dedupe":
-                filtered_page = page.dedupe_chars(
-                    tolerance=2, ignore_char_properties=keys
-                )
+                filtered_page = page.dedupe_chars(tolerance=2, extra_attrs=keys)
             else:
                 filtered_page = page
             for i, line in enumerate(
@@ -116,13 +114,17 @@ class Test(unittest.TestCase):
                     should_dedup = False
                 if isinstance(should_dedup, str):
                     if should_dedup in keys:
-                        assert (
-                            line == text
-                        ), f"Should not be duplicated when ignoring {should_dedup}"
+                        fail_msg = (
+                            f"{should_dedup} is not required to match "
+                            "so it should be duplicated"
+                        )
+                        assert line == dup_text, fail_msg
                     else:
-                        assert (
-                            line == dup_text
-                        ), f"{should_dedup} is not ignored so it should be duplicated"
+                        fail_msg = (
+                            "Should not be duplicated "
+                            f"when requiring matching {should_dedup}"
+                        )
+                        assert line == text, fail_msg
                 elif should_dedup:
                     assert line == text
                 else:
