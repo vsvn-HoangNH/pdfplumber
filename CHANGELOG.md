@@ -2,11 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [0.11.2] - Not yet released
+## [0.11.2] - 2024-07-06
 
 ### Added
 
 - Add `extra_attrs` parameter to `.dedupe_chars(...)` to adjust the properties used when deduplicating (h/t @QuentinAndre11). ([#1114](https://github.com/jsvine/pdfplumber/issues/1114))
+
+### Development Changes
+
+- Remove testing for Python 3.8, add testing for Python 3.12. ([944eaed](https://github.com/jsvine/pdfplumber/commit/944eaed))
+- Upgrade `flake8`, `pytest`, and `pytest-cov` — and add `setuptools` and `py` as explicit dev requirements (for Python 3.12).
 
 ## [0.11.1] - 2024-06-11
 
