@@ -11,8 +11,7 @@ from ._typing import T_bbox, T_num, T_obj, T_obj_list, T_point, T_seq
 from .table import T_table_settings, Table, TableFinder, TableSettings
 
 if TYPE_CHECKING:  # pragma: nocover
-    from pandas.core.frame import DataFrame
-    from pandas.core.series import Series
+    import pandas as pd
 
     from .page import Page
 
@@ -199,7 +198,7 @@ class PageImage:
 
     def draw_lines(
         self,
-        list_of_lines: Union[T_seq[T_contains_points], "DataFrame"],
+        list_of_lines: Union[T_seq[T_contains_points], "pd.DataFrame"],
         stroke: T_color = DEFAULT_STROKE,
         stroke_width: int = DEFAULT_STROKE_WIDTH,
     ) -> "PageImage":
@@ -219,7 +218,7 @@ class PageImage:
 
     def draw_vlines(
         self,
-        locations: Union[List[T_num], "Series"],
+        locations: Union[List[T_num], "pd.Series[float]"],
         stroke: T_color = DEFAULT_STROKE,
         stroke_width: int = DEFAULT_STROKE_WIDTH,
     ) -> "PageImage":
@@ -239,7 +238,7 @@ class PageImage:
 
     def draw_hlines(
         self,
-        locations: Union[List[T_num], "Series"],
+        locations: Union[List[T_num], "pd.Series[float]"],
         stroke: T_color = DEFAULT_STROKE,
         stroke_width: int = DEFAULT_STROKE_WIDTH,
     ) -> "PageImage":
@@ -282,7 +281,7 @@ class PageImage:
 
     def draw_rects(
         self,
-        list_of_rects: Union[List[T_bbox], T_obj_list, "DataFrame"],
+        list_of_rects: Union[List[T_bbox], T_obj_list, "pd.DataFrame"],
         fill: T_color = DEFAULT_FILL,
         stroke: T_color = DEFAULT_STROKE,
         stroke_width: int = DEFAULT_STROKE_WIDTH,
@@ -310,7 +309,7 @@ class PageImage:
 
     def draw_circles(
         self,
-        list_of_circles: Union[List[T_point], T_obj_list, "DataFrame"],
+        list_of_circles: Union[List[T_point], T_obj_list, "pd.DataFrame"],
         radius: int = 5,
         fill: T_color = DEFAULT_FILL,
         stroke: T_color = DEFAULT_STROKE,
