@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.11.2] - Not yet released
+
+### Added
+
+- Add `extra_attrs` parameter to `.dedupe_chars(...)` to adjust the properties used when deduplicating (h/t @QuentinAndre11). ([#1114](https://github.com/jsvine/pdfplumber/issues/1114))
+
 ## [0.11.1] - 2024-06-11
 
 ### Fixed

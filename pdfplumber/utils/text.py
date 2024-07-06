@@ -781,12 +781,17 @@ def extract_text_simple(
     return "\n".join(collate_line(c, x_tolerance) for c in clustered)
 
 
-def dedupe_chars(chars: T_obj_list, tolerance: T_num = 1) -> T_obj_list:
+def dedupe_chars(
+    chars: T_obj_list,
+    tolerance: T_num = 1,
+    extra_attrs: Optional[Tuple[str, ...]] = ("fontname", "size"),
+) -> T_obj_list:
     """
-    Removes duplicate chars — those sharing the same text, fontname, size,
-    and positioning (within `tolerance`) as other characters in the set.
+    Removes duplicate chars — those sharing the same text and positioning
+    (within `tolerance`) as other characters in the set. Use extra_args to
+    be more restrictive with the properties shared by the matching chars.
     """
-    key = itemgetter("fontname", "size", "upright", "text")
+    key = itemgetter(*("upright", "text"), *(extra_attrs or tuple()))
     pos_key = itemgetter("doctop", "x0")
 
     def yield_unique_chars(chars: T_obj_list) -> Generator[T_obj, None, None]:
