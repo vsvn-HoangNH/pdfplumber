@@ -560,8 +560,8 @@ class Page(Container):
     def dedupe_chars(self, **kwargs: Any) -> "FilteredPage":
         """
         Removes duplicate chars — those sharing the same text and positioning
-        (within `tolerance`) as other characters in the set. Use extra_args to
-        be more restrictive with the properties shared by the matching chars.
+        (within `tolerance`) as other characters in the set. Adjust extra_args
+        to be more/less restrictive with the properties checked.
         """
         p = FilteredPage(self, lambda x: True)
         p._objects = {kind: objs for kind, objs in self.objects.items()}
