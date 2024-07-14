@@ -255,7 +255,28 @@ Additionally, both `pdfplumber.PDF` and `pdfplumber.Page` provide access to seve
 
 #### `image` properties
 
-[To be completed.]
+*Note: Although the positioning and characteristics of `image` objects are available via `pdfplumber`, this library does not provide direct support for reconstructing image content. For that, please see [this suggestion](https://github.com/jsvine/pdfplumber/discussions/496#discussioncomment-1259772).*
+
+| Property | Description |
+|----------|-------------|
+|`page_number`| Page number on which the image was found.|
+|`height`| Height of the image.|
+|`width`| Width of the image.|
+|`x0`| Distance of left side of the image from left side of page.|
+|`x1`| Distance of right side of the image from left side of page.|
+|`y0`| Distance of bottom of the image from bottom of page.|
+|`y1`| Distance of top of the image from bottom of page.|
+|`top`| Distance of top of the image from top of page.|
+|`bottom`| Distance of bottom of the image from top of page.|
+|`doctop`| Distance of top of rectangle from top of document.|
+|`srcsize`| The image original dimensions, as a `(width, height)` tuple.|
+|`colorspace`| Color domain of the image (e.g., RGB).|
+|`bits`| The number of bits per color component; e.g., 8 corresponds to 255 possible values for each color component (R, G, and B in an RGB color space).|
+|`stream`| Pixel values of the image, as a `pdfminer.pdftypes.PDFStream` object.|
+|`imagemask`| A nullable boolean; if `True`, "specifies that the image data is to be used as a stencil mask for painting in the current color."|
+|`mcid`| The [marked content](https://ghostscript.com/~robin/pdf_reference17.pdf#page=850) section ID for this image if any (otherwise `None`). *Experimental attribute.*|
+|`tag`| The [marked content](https://ghostscript.com/~robin/pdf_reference17.pdf#page=850) section tag for this image if any (otherwise `None`). *Experimental attribute.*|
+|`object_type`| "image"|
 
 ### Obtaining higher-level layout objects via `pdfminer.six`
 
@@ -544,6 +565,7 @@ Many thanks to the following users who've contributed ideas, features, and fixes
 - [Andy Friedman](https://github.com/afriedman412)
 - [Aron Weiler](https://github.com/aronweiler)
 - [Quentin André](https://github.com/QuentinAndre11)
+- [Léo Roux](https://github.com/leorouxx)
 
 ## Contributing
 
