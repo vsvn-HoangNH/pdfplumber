@@ -633,6 +633,8 @@ class DerivedPage(Page):
         self.pdf = parent_page.pdf
         self.page_obj = parent_page.page_obj
         self.page_number = parent_page.page_number
+        self.initial_doctop = parent_page.initial_doctop
+        self.rotation = parent_page.rotation
         self.mediabox = parent_page.mediabox
         self.cropbox = parent_page.cropbox
         self.flush_cache(Container.cached_properties)

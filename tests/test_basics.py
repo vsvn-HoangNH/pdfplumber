@@ -59,6 +59,16 @@ class Test(unittest.TestCase):
         with pdfplumber.open(path) as pdf:
             assert len(pdf.annots)
 
+    def test_annots_cropped(self):
+        pdf = self.pdf_2
+        page = pdf.pages[0]
+        assert len(page.annots) == 13
+        assert len(page.hyperlinks) == 1
+
+        cropped = page.crop(page.bbox)
+        assert len(cropped.annots) == 13
+        assert len(cropped.hyperlinks) == 1
+
     def test_annots_rotated(self):
         def get_annot(filename, n=0):
             path = os.path.join(HERE, "pdfs", filename)
