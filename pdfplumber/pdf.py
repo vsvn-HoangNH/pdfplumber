@@ -15,7 +15,7 @@ from pdfminer.psparser import PSException
 from ._typing import T_num, T_obj_list
 from .container import Container
 from .page import Page
-from .repair import _repair
+from .repair import T_repair_setting, _repair
 from .structure import PDFStructTree, StructTreeMissing
 from .utils import resolve_and_decode
 
@@ -72,12 +72,15 @@ class PDF(Container):
         strict_metadata: bool = False,
         repair: bool = False,
         gs_path: Optional[Union[str, pathlib.Path]] = None,
+        repair_setting: T_repair_setting = "default",
     ) -> "PDF":
 
         stream: Union[BufferedReader, BytesIO]
 
         if repair:
-            stream = _repair(path_or_fp, password=password, gs_path=gs_path)
+            stream = _repair(
+                path_or_fp, password=password, gs_path=gs_path, setting=repair_setting
+            )
             stream_is_external = False
             # Although the original file has a path,
             # the repaired version does not

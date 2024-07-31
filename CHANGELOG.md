@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [0.11.3] - Unreleased
 
+### Changed
+
+- Change default setting `pdfplumber.repair(...)` passes to Ghostscript's `-dPDFSETTINGS` parameter, from `prepress` to `default`, and make that setting modifiable via `.repair(setting=...)`, where the value is one of `"default"`, `"prepress"`, `"printer"`, or `"ebook"` (h/t @Laubeee). ([#874](https://github.com/jsvine/pdfplumber/issues/874))
+
 ### Fixed
 
 - Fix error on getting `.annots`/`.hyperlinks` from `CroppedPage` (due to missing `.rotation` and `.initial_doctop` attributes) (h/t @Safrone). ([#1171](https://github.com/jsvine/pdfplumber/issues/1171) + [e5737d2](https://github.com/jsvine/pdfplumber/commit/e5737d2))
