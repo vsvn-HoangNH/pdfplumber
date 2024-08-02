@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. The format 
 
 ## [0.11.3] - Unreleased
 
+### Added
+
+- Add `Table.columns`, analogous to `Table.rows` (h/t @Pk13055). ([#1050](https://github.com/jsvine/pdfplumber/issues/1050))
+
 ### Changed
 
 - Change default setting `pdfplumber.repair(...)` passes to Ghostscript's `-dPDFSETTINGS` parameter, from `prepress` to `default`, and make that setting modifiable via `.repair(setting=...)`, where the value is one of `"default"`, `"prepress"`, `"printer"`, or `"ebook"` (h/t @Laubeee). ([#874](https://github.com/jsvine/pdfplumber/issues/874))

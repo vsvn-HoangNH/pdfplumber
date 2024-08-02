@@ -370,6 +370,10 @@ class Row(CellGroup):
     pass
 
 
+class Column(CellGroup):
+    pass
+
+
 class Table(object):
     def __init__(self, page: "Page", cells: List[T_bbox]):
         self.page = page
@@ -385,16 +389,34 @@ class Table(object):
             max(map(itemgetter(3), c)),
         )
 
-    @property
-    def rows(self) -> List[Row]:
-        _sorted = sorted(self.cells, key=itemgetter(1, 0))
-        xs = list(sorted(set(map(itemgetter(0), self.cells))))
+    def _get_rows_or_cols(self, kind: type[CellGroup]) -> List[CellGroup]:
+        axis = 0 if kind is Row else 1
+        antiaxis = int(not axis)
+
+        # Sort first by top/x0, then by x0/top
+        _sorted = sorted(self.cells, key=itemgetter(antiaxis, axis))
+
+        # Sort get all x0s/tops
+        xs = list(sorted(set(map(itemgetter(axis), self.cells))))
+
+        # Group by top/x0
+        grouped = itertools.groupby(_sorted, itemgetter(antiaxis))
+
         rows = []
-        for y, row_cells in itertools.groupby(_sorted, itemgetter(1)):
-            xdict = {cell[0]: cell for cell in row_cells}
-            row = Row([xdict.get(x) for x in xs])
+        # for y/x, row/column-cells ...
+        for y, row_cells in grouped:
+            xdict = {cell[axis]: cell for cell in row_cells}
+            row = kind([xdict.get(x) for x in xs])
             rows.append(row)
         return rows
+
+    @property
+    def rows(self) -> List[CellGroup]:
+        return self._get_rows_or_cols(Row)
+
+    @property
+    def columns(self) -> List[CellGroup]:
+        return self._get_rows_or_cols(Column)
 
     def extract(self, **kwargs: Any) -> List[List[Optional[str]]]:
 
