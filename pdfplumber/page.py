@@ -216,8 +216,8 @@ class Page(Container):
         self.initial_doctop = initial_doctop
 
         def get_attr(key: str, default: Any = None) -> Any:
-            ref = page_obj.attrs.get(key)
-            return default if ref is None else resolve_all(ref)
+            value = resolve_all(page_obj.attrs.get(key))
+            return default if value is None else value
 
         # Per PDF Reference Table 3.27: "The number of degrees by which the
         # page should be rotated clockwise when displayed or printed. The value
