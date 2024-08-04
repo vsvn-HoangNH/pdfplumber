@@ -99,6 +99,18 @@ class Test(unittest.TestCase):
         assert words_rtl[1]["text"] == "baaabaaA/AAA"
         assert words_rtl[1]["direction"] == "rtl"
 
+    def test_extract_words_return_chars(self):
+        path = os.path.join(HERE, "pdfs/extra-attrs-example.pdf")
+        with pdfplumber.open(path) as pdf:
+            page = pdf.pages[0]
+
+            words = page.extract_words()
+            assert "chars" not in words[0]
+
+            words = page.extract_words(return_chars=True)
+            assert "chars" in words[0]
+            assert "".join(c["text"] for c in words[0]["chars"]) == words[0]["text"]
+
     def test_text_rotation(self):
         rotations = {
             "0": ("ltr", "ttb"),
