@@ -291,7 +291,8 @@ class Page(Container):
             _a, _b, _c, _d = annot["Rect"]
             pt0 = rotate_point((_a, _b), self.rotation)
             pt1 = rotate_point((_c, _d), self.rotation)
-            x0, top, x1, bottom = _invert_box(_normalize_box((*pt0, *pt1)), self.height)
+            rh = self.root_page.height
+            x0, top, x1, bottom = _invert_box(_normalize_box((*pt0, *pt1)), rh)
 
             a = annot.get("A", {})
             extras = {
@@ -310,9 +311,9 @@ class Page(Container):
                 "page_number": self.page_number,
                 "object_type": "annot",
                 "x0": x0,
-                "y0": self.height - bottom,
+                "y0": rh - bottom,
                 "x1": x1,
-                "y1": self.height - top,
+                "y1": rh - top,
                 "doctop": self.initial_doctop + top,
                 "top": top,
                 "bottom": bottom,
