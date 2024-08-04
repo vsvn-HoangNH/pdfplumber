@@ -329,7 +329,11 @@ class Page(Container):
             return parsed
 
         raw = resolve_all(self.page_obj.annots) or []
-        return list(map(parse, raw))
+        parsed = list(map(parse, raw))
+        if isinstance(self, CroppedPage):
+            return self._crop_fn(parsed)
+        else:
+            return parsed
 
     @property
     def hyperlinks(self) -> T_obj_list:

@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Fix error on getting `.annots`/`.hyperlinks` from `CroppedPage` (due to missing `.rotation` and `.initial_doctop` attributes) (h/t @Safrone). ([#1171](https://github.com/jsvine/pdfplumber/issues/1171) + [e5737d2](https://github.com/jsvine/pdfplumber/commit/e5737d2))
+- Fix problem where `Page.crop(...)` was not cropping `.annots/.hyperlinks` (h/t @Safrone). [#1171](https://github.com/jsvine/pdfplumber/issues/1171)
 - Fix calculation of coordinates for `.annots` on `CroppedPage`s. ([0bbb340](https://github.com/jsvine/pdfplumber/commit/0bbb340))
 - Dereference structure element attributes (h/t @dhdaines). ([#1169](https://github.com/jsvine/pdfplumber/pull/1169))
 - Fix `Page.get_attr(...)` so that it fully resolves references before determining whether the attribute's value is `None` (h/t @zzhangyun + @mkl-public). ([#1176](https://github.com/jsvine/pdfplumber/issues/1176))
