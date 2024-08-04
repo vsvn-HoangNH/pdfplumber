@@ -81,6 +81,8 @@ To load a password-protected PDF, pass the `password` keyword argument, e.g., `p
 
 To set layout analysis parameters to `pdfminer.six`'s layout engine, pass the `laparams` keyword argument, e.g., `pdfplumber.open("file.pdf", laparams = { "line_overlap": 0.7 })`.
 
+To [pre-normalize Unicode text](https://unicode.org/reports/tr15/), pass `unicode_norm=...`, where `...` is one of the [four Unicode normalization forms](https://unicode.org/reports/tr15/#Normalization_Forms_Table): `"NFC"`, `"NFD"`, `"NFKC"`, or `"NFKD"`.
+
 Invalid metadata values are treated as a warning by default. If that is not intended, pass `strict_metadata=True` to the `open` method and `pdfplumber.open` will raise an exception if it is unable to parse the metadata.
 
 ### The `pdfplumber.PDF` class

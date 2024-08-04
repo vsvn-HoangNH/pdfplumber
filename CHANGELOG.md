@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Add `Table.columns`, analogous to `Table.rows` (h/t @Pk13055). ([#1050](https://github.com/jsvine/pdfplumber/issues/1050))
 - Add `Page.extract_words(return_chars=True)`, mirroring `Page.search(..., return_chars=True)`; if this argument is passed, each word dictionary will include an additional key-value pair: `"chars": [char_object, ...]` (h/t @cmdlineluser). ([#1173](https://github.com/jsvine/pdfplumber/issues/1173))
+- Add `pdfplumber.open(unicode_norm="NFC"/"NFD"/"NFKC"/NFKD")`, where the values are the [four options for Unicode normalization](https://unicode.org/reports/tr15/#Normalization_Forms_Table) (h/t @petermr + @agusluques). ([#905](https://github.com/jsvine/pdfplumber/issues/905))
 
 ### Changed
 

@@ -12,6 +12,7 @@ from typing import (
     Tuple,
     Union,
 )
+from unicodedata import normalize as normalize_unicode
 
 from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import (
@@ -382,7 +383,12 @@ class Page(Container):
                 attr[color_attr], attr[pattern_attr] = normalize_color(attr[color_attr])
 
         if isinstance(obj, (LTChar, LTTextContainer)):
-            attr["text"] = obj.get_text()
+            text = obj.get_text()
+            attr["text"] = (
+                normalize_unicode(self.pdf.unicode_norm, text)
+                if self.pdf.unicode_norm is not None
+                else text
+            )
 
         if isinstance(obj, LTChar):
             # pdfminer.six (at least as of v20221105) does not

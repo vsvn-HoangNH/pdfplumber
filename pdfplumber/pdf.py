@@ -3,7 +3,7 @@ import logging
 import pathlib
 from io import BufferedReader, BytesIO
 from types import TracebackType
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from pdfminer.layout import LAParams
 from pdfminer.pdfdocument import PDFDocument
@@ -34,6 +34,7 @@ class PDF(Container):
         laparams: Optional[Dict[str, Any]] = None,
         password: Optional[str] = None,
         strict_metadata: bool = False,
+        unicode_norm: Optional[Literal["NFC", "NFKC", "NFD", "NFKD"]] = None,
     ):
         self.stream = stream
         self.stream_is_external = stream_is_external
@@ -41,6 +42,7 @@ class PDF(Container):
         self.pages_to_parse = pages
         self.laparams = None if laparams is None else LAParams(**laparams)
         self.password = password
+        self.unicode_norm = unicode_norm
 
         self.doc = PDFDocument(PDFParser(stream), password=password or "")
         self.rsrcmgr = PDFResourceManager()
@@ -70,6 +72,7 @@ class PDF(Container):
         laparams: Optional[Dict[str, Any]] = None,
         password: Optional[str] = None,
         strict_metadata: bool = False,
+        unicode_norm: Optional[Literal["NFC", "NFKC", "NFD", "NFKD"]] = None,
         repair: bool = False,
         gs_path: Optional[Union[str, pathlib.Path]] = None,
         repair_setting: T_repair_setting = "default",
@@ -102,6 +105,7 @@ class PDF(Container):
                 laparams=laparams,
                 password=password,
                 strict_metadata=strict_metadata,
+                unicode_norm=unicode_norm,
                 stream_is_external=stream_is_external,
             )
 

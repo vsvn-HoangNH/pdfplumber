@@ -192,6 +192,19 @@ class Test(unittest.TestCase):
         with pdfplumber.open(path, password="test") as pdf:
             assert len(pdf.chars) > 0
 
+    def test_unicode_normalization(self):
+        path = os.path.join(HERE, "pdfs/issue-905.pdf")
+
+        with pdfplumber.open(path) as pdf:
+            page = pdf.pages[0]
+            print(page.extract_text())
+            assert ord(page.chars[0]["text"]) == 894
+
+        with pdfplumber.open(path, unicode_norm="NFC") as pdf:
+            page = pdf.pages[0]
+            assert ord(page.chars[0]["text"]) == 59
+            assert page.extract_text() == ";;"
+
     def test_colors(self):
         rect = self.pdf.pages[0].rects[0]
         assert rect["non_stroking_color"] == (0.8, 1, 1)
