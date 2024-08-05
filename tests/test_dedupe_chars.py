@@ -27,7 +27,10 @@ class Test(unittest.TestCase):
         last_line_without_drop = table_without_drop_duplicates[1][1].split("\n")[-1]
         last_line_with_drop = table_with_drop_duplicates[1][1].split("\n")[-1]
 
-        assert last_line_without_drop == "微微软软 培培训训课课程程：： 名名模模意意义义一一些些有有意意义义一一些些"
+        assert (
+            last_line_without_drop
+            == "微微软软 培培训训课课程程：： 名名模模意意义义一一些些有有意意义义一一些些"
+        )
         assert last_line_with_drop == "微软 培训课程： 名模意义一些有意义一些"
 
     def test_extract_words(self):
@@ -46,7 +49,10 @@ class Test(unittest.TestCase):
         assert round(last_words_without_drop["top"], 3) in (top_windows, top_linux)
         assert round(last_words_without_drop["bottom"], 3) == bottom
         assert last_words_without_drop["upright"] == 1
-        assert last_words_without_drop["text"] == "名名模模意意义义一一些些有有意意义义一一些些"
+        assert (
+            last_words_without_drop["text"]
+            == "名名模模意意义义一一些些有有意意义义一一些些"
+        )
 
         assert round(last_words_with_drop["x0"], 3) == x0
         assert round(last_words_with_drop["x1"], 3) == x1_with_drop
@@ -60,7 +66,10 @@ class Test(unittest.TestCase):
         last_line_without_drop = page.extract_text().split("\n")[-1]
         last_line_with_drop = page.dedupe_chars().extract_text().split("\n")[-1]
 
-        assert last_line_without_drop == "微微软软 培培训训课课程程：： 名名模模意意义义一一些些有有意意义义一一些些"
+        assert (
+            last_line_without_drop
+            == "微微软软 培培训训课课程程：： 名名模模意意义义一一些些有有意意义义一一些些"
+        )
         assert last_line_with_drop == "微软 培训课程： 名模意义一些有意义一些"
 
     def test_extract_text2(self):
