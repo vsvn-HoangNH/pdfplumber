@@ -310,3 +310,25 @@ class Test(unittest.TestCase):
             page = pdf.pages[0]
             # Should not error:
             assert page.extract_text()
+
+    def test_issue_1181(self):
+        """
+        Correctly re-calculate coordinates when MediaBox does not start at (0,0)
+        """
+        path = os.path.join(HERE, "pdfs/issue-1181.pdf")
+        with pdfplumber.open(path) as pdf:
+            p0, p1 = pdf.pages
+            assert p0.crop(p0.bbox).extract_table() == [
+                ["FooCol1", "FooCol2", "FooCol3"],
+                ["Foo4", "Foo5", "Foo6"],
+                ["Foo7", "Foo8", "Foo9"],
+                ["Foo10", "Foo11", "Foo12"],
+                ["", "", ""],
+            ]
+            assert p1.crop(p1.bbox).extract_table() == [
+                ["BarCol1", "BarCol2", "BarCol3"],
+                ["Bar4", "Bar5", "Bar6"],
+                ["Bar7", "Bar8", "Bar9"],
+                ["Bar10", "Bar11", "Bar12"],
+                ["", "", ""],
+            ]

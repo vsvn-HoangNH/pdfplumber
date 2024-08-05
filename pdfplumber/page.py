@@ -415,10 +415,19 @@ class Page(Container):
 
             attr["dash"] = obj.dashing_style
 
+        # As noted in #1181, `pdfminer.six` adjusts objects'
+        # coordinates relative to the MediaBox:
+        # https://github.com/pdfminer/pdfminer.six/blob/1a8bd2f730295b31d6165e4d95fcb5a03793c978/pdfminer/converter.py#L79-L84
+        mb_x0, mb_top = self.mediabox[:2]
+
         if "y0" in attr:
-            attr["top"] = self.height - attr["y1"]
-            attr["bottom"] = self.height - attr["y0"]
+            attr["top"] = (self.height - attr["y1"]) + mb_top
+            attr["bottom"] = (self.height - attr["y0"]) + mb_top
             attr["doctop"] = self.initial_doctop + attr["top"]
+
+        if "x0" in attr and mb_x0 != 0:
+            attr["x0"] = attr["x0"] + mb_x0
+            attr["x1"] = attr["x1"] + mb_x0
 
         return attr
 

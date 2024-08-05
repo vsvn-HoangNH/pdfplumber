@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
+- Fix handling of object coordinates when `mediabox` does not begin at `(0,0)` (h/t @wodny). ([#1181](https://github.com/jsvine/pdfplumber/issues/1181))
 - Fix error on getting `.annots`/`.hyperlinks` from `CroppedPage` (due to missing `.rotation` and `.initial_doctop` attributes) (h/t @Safrone). ([#1171](https://github.com/jsvine/pdfplumber/issues/1171) + [e5737d2](https://github.com/jsvine/pdfplumber/commit/e5737d2))
 - Fix problem where `Page.crop(...)` was not cropping `.annots/.hyperlinks` (h/t @Safrone). [#1171](https://github.com/jsvine/pdfplumber/issues/1171)
 - Fix calculation of coordinates for `.annots` on `CroppedPage`s. ([0bbb340](https://github.com/jsvine/pdfplumber/commit/0bbb340))
