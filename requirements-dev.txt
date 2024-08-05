@@ -1,6 +1,6 @@
-black==22.3.0
-flake8==7.1.0
-isort==5.10.1
+black==24.8.0
+flake8==7.1.1
+isort==5.13.2
 jupyterlab==3.6.7
 mypy==0.981
 nbexec==0.2.0
