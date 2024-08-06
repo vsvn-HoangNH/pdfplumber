@@ -501,7 +501,7 @@ class TableSettings:
     intersection_y_tolerance: T_num = UNSET
     text_settings: Optional[Dict[str, Any]] = None
 
-    def __post_init__(self) -> "TableSettings":
+    def __post_init__(self) -> None:
         """Clean up user-provided table settings.
 
         Validates that the table settings provided consists of acceptable values and
@@ -551,8 +551,6 @@ class TableSettings:
         ]:
             if getattr(self, attr) is UNSET:
                 setattr(self, attr, getattr(self, fallback))
-
-        return self
 
     @classmethod
     def resolve(cls, settings: Optional[T_table_settings]) -> "TableSettings":
