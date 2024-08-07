@@ -348,7 +348,8 @@ class Page(Container):
         return self._objects
 
     def point2coord(self, pt: Tuple[T_num, T_num]) -> Tuple[T_num, T_num]:
-        return (pt[0], self.height - pt[1])
+        # See note below re. #1181 and mediabox-adjustment reversions
+        return (self.mediabox[0] + pt[0], self.mediabox[1] + self.height - pt[1])
 
     def process_object(self, obj: LTItem) -> T_obj:
         kind = re.sub(lt_pat, "", obj.__class__.__name__).lower()
