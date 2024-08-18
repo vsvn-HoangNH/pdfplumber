@@ -1,7 +1,7 @@
 import itertools
 from dataclasses import dataclass
 from operator import itemgetter
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Type, Union
 
 from . import utils
 from ._typing import T_bbox, T_num, T_obj, T_obj_iter, T_obj_list, T_point
@@ -389,7 +389,7 @@ class Table(object):
             max(map(itemgetter(3), c)),
         )
 
-    def _get_rows_or_cols(self, kind: type[CellGroup]) -> List[CellGroup]:
+    def _get_rows_or_cols(self, kind: Type[CellGroup]) -> List[CellGroup]:
         axis = 0 if kind is Row else 1
         antiaxis = int(not axis)
 
