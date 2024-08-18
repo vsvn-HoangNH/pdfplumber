@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [0.11.4] - [unreleased]
+## [0.11.4] - 2024-08-18
 
 ### Fixed
 
