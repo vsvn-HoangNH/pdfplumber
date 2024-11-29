@@ -703,20 +703,36 @@ WORD_EXTRACTOR_KWARGS = inspect.signature(WordExtractor).parameters.keys()
 
 
 def chars_to_textmap(chars: T_obj_list, **kwargs: Any) -> TextMap:
-    kwargs.update(
-        {
-            "presorted": True,
-            "layout_bbox": kwargs.get("layout_bbox") or objects_to_bbox(chars),
-        }
-    )
+    _textmap: List[Tuple[str, T_obj]] = []
 
-    extractor = WordExtractor(
-        **{k: kwargs[k] for k in WORD_EXTRACTOR_KWARGS if k in kwargs}
-    )
-    wordmap = extractor.extract_wordmap(chars)
-    textmap = wordmap.to_textmap(
-        **{k: kwargs[k] for k in TEXTMAP_KWARGS if k in kwargs}
-    )
+    # Cluster by Y and add newlines
+    out = []
+    torerance = 10
+    for ch in chars:
+        if not out:
+            out.append([ch])
+            continue
+        last_line = out[-1]
+        last_ch = out[-1][-1]
+        if last_ch['y0'] - ch['y0'] > torerance:
+            new_line_ch = last_ch.copy()
+            new_line_ch['text'] = '\n'
+            last_line.append(new_line_ch)
+            # New line
+            out.append([ch])
+        else:
+            out[-1].append(ch)
+            
+    # flatten
+    new_chars = [x for y in out for x in y]
+
+    _textmap = list(map(lambda x: (x["text"], x), new_chars))
+    textmap = TextMap(
+        _textmap,
+        line_dir_render=kwargs.get("line_dir_render") or DEFAULT_LINE_DIR,
+        char_dir_render=kwargs.get("char_dir_render") or DEFAULT_CHAR_DIR,
+    )    
+
     return textmap
 
 
